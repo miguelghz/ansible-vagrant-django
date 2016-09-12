@@ -1,0 +1,12 @@
+update_apt_cache: yes
+ansible_distribution_release: xenial
+ansible_python_interpreter: /usr/bin/python2.7
+
+postgresql:
+  version: 9.5
+
+db_name: django_app
+db_user: django
+db_password: abcdefghijklmnopqrstuvwxyz
+
+project_path: /var/www/djangoproject
