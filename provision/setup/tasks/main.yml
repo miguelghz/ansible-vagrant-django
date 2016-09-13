@@ -10,6 +10,8 @@
     - python-dev
     - python-pip
     - python-pycurl
+    - nginx
+    - gunicorn
   tags: packages
 
 - name: Upgrade pip
@@ -61,6 +63,16 @@
 
 - name: Install project dependencies
   pip: requirements={{ project_path }}/requirements.txt
+  notify:
+      - restart gunicorn
+
+- name: remove default nginx site
+  file: path=/etc/nginx/sites-enabled/default state=absent
+
+- name: copy nginx config
+  template: src=files/nginx.j2 dest=/etc/nginx/sites-enabled/{{ project_name }}.conf
+  notify:
+      - restart nginx
 
 - name: Django make migrations
   django_manage: >
@@ -72,7 +84,13 @@
       command=migrate
       app_path={{ project_path }}
 
-- name: Django run sever
-  django_manage: >
-      command="runserver 0.0.0.0:8000"
-      app_path={{ project_path }}
+- name: copy gunicorn config
+  template: src=files/gunicorn.j2 dest=/etc/init/gunicorn.conf
+  notify:
+  - restart gunicorn
+
+- name: Nginx server is running
+  service: name=nginx state=started enabled=yes
+
+- name: Gunicorn server is running
+  service: name=gunicorn state=started enabled=yes

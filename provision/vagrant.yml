@@ -1,8 +1,5 @@
 - hosts: all
-  #ignore_errors: no
-  #become: yes
-  become: True
-  gather_facts: no
+  become: yes
+  gather_facts: false
   roles:
       - setup
-      - deploy
