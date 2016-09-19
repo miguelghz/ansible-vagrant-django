@@ -9,5 +9,5 @@ build/
 include/
 lib/
 local/
-.pyc
+*.pyc
 .DS_Store
