@@ -7,11 +7,10 @@ server_name: localhost
 project_path: "/var/www/{{ project_name }}"
 static_root: "{{ project_path }}/static"
 
-wsgi_module: hello.wsgi
-
 postgresql:
   version: 9.5
 
 db_name: django_db
 db_user: django_user
 db_password: passw_db
+

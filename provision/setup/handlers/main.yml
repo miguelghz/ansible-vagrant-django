@@ -4,6 +4,11 @@
 
 - name: restart nginx
   service: name=nginx state=restarted
+  
+- name: reload systemd 
+  become: yes 
+  shell: systemctl daemon-reload
 
 - name: restart gunicorn
   service: name=gunicorn state=restarted
+

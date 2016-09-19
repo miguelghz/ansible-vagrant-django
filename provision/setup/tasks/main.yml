@@ -64,6 +64,7 @@
 - name: Install project dependencies
   pip: requirements={{ project_path }}/requirements.txt
   notify:
+      - reload systemd
       - restart gunicorn
 
 - name: remove default nginx site
@@ -85,12 +86,15 @@
       app_path={{ project_path }}
 
 - name: copy gunicorn config
-  template: src=files/gunicorn.j2 dest=/etc/init/gunicorn.conf
+  template: src=files/gunicorn.j2 dest=/etc/systemd/system/gunicorn.service
   notify:
+  - reload systemd
   - restart gunicorn
+  
 
 - name: Nginx server is running
   service: name=nginx state=started enabled=yes
 
 - name: Gunicorn server is running
   service: name=gunicorn state=started enabled=yes
+
